@@ -1,5 +1,6 @@
 from models.package import Package
 from models.hash_table import HashTable
+from models.vertex import Vertex
 
 def load_package_data():
     with open('./data/Package_File.csv', 'r') as package_file:
@@ -24,9 +25,30 @@ def load_package_data():
             h.insert(p_id, pkg)
     return h
 
-pkg_hash_map = load_package_data()
+# pkg_hash_map = load_package_data()
 
-print("--------------------------------")
-print(pkg_hash_map.print())
+# print("--------------------------------")
+# print(pkg_hash_map.print())
 
+def load_distance_data():
+    # loading header data to created vertices
+    with open('./data/WGUPS_Distance_Table.csv', 'r', encoding='utf-8-sig') as dist_header_data:
+        header_file = dist_header_data.readlines()
+        headers = [row.split(',\n') for row in header_file[:28]]
+        vertices = [] 
         
+        for line in headers:
+            vertex = Vertex(line[0])
+            vertices.append(vertex)
+            
+            
+    with open('./data/WGUPS_Distance_Table.csv', 'r', encoding='utf-8-sig') as dist_row_data:
+        row_file = dist_row_data.readlines()
+        rows = [line.split(',\n') for line in row_file[27:]]
+        
+        for line in rows:
+            print(line[0])
+        
+    return vertices
+
+distance_rows = load_distance_data()
