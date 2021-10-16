@@ -5,12 +5,14 @@ from models.graph import Graph
 
 
 def load_package_data():
+    # loading package data 
     with open('./data/Package_File.csv', 'r') as package_file:
         file = package_file.readlines()
         data_array = [row.split(',') for row in file]
         data_array.pop(0)  # removing the first element from the array (column headers)
         h = HashTable()
         
+        # creating a new package object from each row of data in the data_array
         for data in data_array:
             p_id = int(data[0])
             address = data[1]
@@ -23,7 +25,7 @@ def load_package_data():
             status = 'AT_HUB'
             
             pkg = Package(p_id, address, city, state, zip, delivery_deadline, mass_kg, notes, status)
-            h.insert(p_id, pkg)
+            h.insert(p_id, pkg)  # inserting the key/value pair into the hash_table
     return h
 
 # pkg_hash_map = load_package_data()
@@ -32,23 +34,25 @@ def load_package_data():
 # print(pkg_hash_map.print())
 
 def load_distance_data():
-    # loading header data to created vertices
+    # loading header data
     with open('./data/WGUPS_Distance_Table.csv', 'r', encoding='utf-8-sig') as dist_header_data:
         header_file = dist_header_data.readlines()
-        headers = [row.split(',\n') for row in header_file[:28]]
+        headers = [row.split(',\n') for row in header_file[:27]]  # taking the header addresses and placing them into an array
         vertices = [] 
         graph = Graph()
         
+        # creating vertex objects and adding them to an array and the graph
         for line in headers:
             vertex = Vertex(line[0])
             vertices.append(vertex)
             graph.add_vertex(vertex)
             
-            
+    # loading row data      
     with open('./data/WGUPS_Distance_Table.csv', 'r', encoding='utf-8-sig') as dist_row_data:
         row_file = dist_row_data.readlines()
-        rows = [line.split(',\n') for line in row_file[27:]]
+        rows = [line.split(',\n') for line in row_file[27:]]  # taking only the distance data (miles)
         
+        # pairing the correct vertices with the distance between them and adding them to the graph.
         for i, row in enumerate(rows):
             miles = row[0].split(',')
             vertex_1 = vertices[i]
