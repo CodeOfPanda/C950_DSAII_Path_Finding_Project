@@ -17,6 +17,9 @@ class Truck:
 
     def load_packages(self, package):
         self.packages.append(package)
+        
+    def get_packages(self):
+        return self.packages
 
     def print(self):
         for package in self.packages:
