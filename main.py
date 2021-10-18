@@ -1,25 +1,28 @@
+# Maggie Leigland Student ID: #001058808
+
 from load_data import load_package_data, load_distance_data, load_all_trucks
 
 pkg_hashmap = load_package_data()
-graph = load_distance_data()
-t1, t2, t3 = load_all_trucks(pkg_hashmap)
+graph, vertices = load_distance_data()
+trucks = load_all_trucks(pkg_hashmap)
 
 
 def dijkstra_shortest_path(g, start_vertex, pkg_queue):
     # Put all vertices in an unvisited queue.
     unvisited_queue = []
-
-    for pkg in pkg_queue:
-        for current_vertex in g.adjacency_list:
-            if pkg.get_address() == current_vertex.get_address():
-                unvisited_queue.append(current_vertex)
-        # unvisited_queue = [vertex_1, vertex_2, ...]
+    
+    for package in pkg_queue:
+        for vertex in vertices:
+            if package.get_address() == vertex.get_address():
+                unvisited_queue.append(vertex)
+    #dedup the data 
+    queue = set(unvisited_queue)
+    unvisited_queue = list(queue)
 
     # Start_vertex has a distance of 0 from itself
     start_vertex.distance = 0
 
-    # One vertex is removed with each iteration; repeat until the list is
-    # empty.
+    # One vertex is removed with each iteration; repeat until the list is empty.
     while len(unvisited_queue) > 0:
 
         # Visit vertex with minimum distance from start_vertex
@@ -29,14 +32,13 @@ def dijkstra_shortest_path(g, start_vertex, pkg_queue):
             if unvisited_queue[i].distance < unvisited_queue[smallest_index].distance:
                 smallest_index = i
         current_vertex = unvisited_queue.pop(smallest_index)
-        #print("From Start Vetex to current_vertex.label: " + current_vertex.label +" distance: " + str(current_vertex.distance))
+        print("From Start Vetex to current_vertex.label: " + current_vertex.label +" distance: " + str(current_vertex.distance))
 
-        # Check potential path lengths from the current vertex to all neighbors.
-        # values from  dictionary
+        #Check potential path lengths from the current vertex to all neighbors. values from  dictionary
         for adj_vertex in g.adjacency_list[current_vertex]:
             # if current_vertex = vertex_1 => adj_vertex in [vertex_2, vertex_3], if vertex_2 => adj_vertex in [vertex_6], ...
             # values from dictionary
-            edge_weight = g.edge_weights[(current_vertex, adj_vertex)]
+            edge_weight = g.edge_list[(current_vertex, adj_vertex)]
             # edge_weight = 484 then 626 then 1306, ...}
             alternative_path_distance = current_vertex.distance + edge_weight
 
@@ -56,18 +58,14 @@ def get_shortest_path(start_vertex, end_vertex):
     path = start_vertex.label + path
     return path
 
+# Run Dijkstra algorithm for all trucks
+for truck in trucks:
+    dijkstra_shortest_path(graph, vertices[0], truck.get_packages())
 
-# get start vertex
-for i, v in enumerate(graph.adjacency_list.keys()):
-    if i == 0:
-        start_vertex = v
-
-dijkstra_shortest_path(graph, start_vertex, t1.packages)
-
-print("\nDijkstra shortest path:")
-for v in graph.adjacency_list:
-    if v.pre_vertex is None and v is not start_vertex:
-        print("1 to %s ==> no path exists" % v.label)
-    else:
-        print("1 to %s ==> %s (total distance: %g)" %
-              (v.label, get_shortest_path(start_vertex, v), v.distance))
+# print("\nDijkstra shortest path:")
+# for v in graph.adjacency_list:
+#     if v.pre_vertex is None and v is not start_vertex:
+#         print("1 to %s ==> no path exists" % v.label)
+#     else:
+#         print("1 to %s ==> %s (total distance: %g)" %
+#               (v.label, get_shortest_path(start_vertex, v), v.distance))
