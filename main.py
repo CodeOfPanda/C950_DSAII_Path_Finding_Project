@@ -20,15 +20,30 @@ def dijkstra_shortest_path(g, start_vertex, pkg_queue):
     unvisited_queue = list(queue)
 
     # Start_vertex has a distance of 0 from itself
-    start_vertex.distance = 0
+    #start_vertex.distance = 0
+    shortest_distance = float('inf')
+    for loc in unvisited_queue:
+        print(loc.get_address())
+    print('----')
+    for i, delivery_loc in enumerate(unvisited_queue):
+        for k,v in g.edge_list.items():
+            if k[0].get_address() == start_vertex.get_address():
+                if k[1].get_address() == delivery_loc.get_address():
+                    print('From ',k[0].get_name(), ' to ',k[1].get_address(),' is ',g.edge_list[k], ' miles')
+                    if float(g.edge_list[k]) < float(shortest_distance):
+                        shortest_distance = g.edge_list[k]
+    print(shortest_distance)
+
 
     # One vertex is removed with each iteration; repeat until the list is empty.
-    while len(unvisited_queue) > 0:
+    while len(unvisited_queue) > 100:
 
         # Visit vertex with minimum distance from start_vertex
         smallest_index = 0
         for i in range(1, len(unvisited_queue)):
-            #print(unvisited_queue[i].label, unvisited_queue[i].distance, unvisited_queue[i].pre_vertex)
+            #Brady notes
+            # if unvisted_queue[1] distance is less than unvisited_queue[0] distance
+            # issue is that all distance values are infinity
             if unvisited_queue[i].distance < unvisited_queue[smallest_index].distance:
                 smallest_index = i
         current_vertex = unvisited_queue.pop(smallest_index)
@@ -58,8 +73,9 @@ def get_shortest_path(start_vertex, end_vertex):
     path = start_vertex.label + path
     return path
 
+t1 = [trucks[0]]
 # Run Dijkstra algorithm for all trucks
-for truck in trucks:
+for truck in t1:
     dijkstra_shortest_path(graph, vertices[0], truck.get_packages())
 
 # print("\nDijkstra shortest path:")
