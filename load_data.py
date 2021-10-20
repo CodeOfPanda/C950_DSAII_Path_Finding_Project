@@ -90,9 +90,9 @@ def load_distance_data():
 # Big O(N) since it calls the function load_truck that has an O(N) runtime.
 def load_all_trucks(hashmap):
     # Create three truck objects
-    t1 = Truck()
-    t2 = Truck()
-    t3 = Truck()
+    t1 = Truck(9,5,0)
+    t2 = Truck(8,0,0)
+    t3 = Truck(10,20,0)
 
     # Package id's for each Truck
     t1_packages = [6, 25, 26, 31, 32, 28, 34, 39, 35, 33, 27, 24, 23, 22, 17, 12]
