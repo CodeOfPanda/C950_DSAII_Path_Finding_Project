@@ -15,53 +15,49 @@ def dijkstra_shortest_path(g, start_vertex, pkg_queue):
         for vertex in vertices:
             if package.get_address() == vertex.get_address():
                 unvisited_queue.append(vertex)
-    #dedup the data 
+    # dedup the data 
     queue = set(unvisited_queue)
     unvisited_queue = list(queue)
 
     # Start_vertex has a distance of 0 from itself
-    #start_vertex.distance = 0
+    start_vertex.set_distance(0.0)
+    #setting current vertext to start vertex for the beginning of the algorithm. current_vertex gets updated throughout
+    current_vertex = start_vertex
+    total_distance = float(0.0)
+    
+    while len(unvisited_queue) >= 0:
+        if len(unvisited_queue) == 0:
+            new_vertex, idx, shortest_distance = calculate_distance([start_vertex], g, current_vertex)
+            break
+        else:
+            new_vertex, idx, shortest_distance = calculate_distance(unvisited_queue, g, current_vertex)
+        
+        #after loop has ran, update current_vertex
+        current_vertex = new_vertex
+        print("Current vertex is now: ", current_vertex.get_name())
+        print("Removing ", unvisited_queue[idx].get_name(), "....")
+        unvisited_queue.pop(idx)
+        total_distance = float(total_distance) + float(shortest_distance)
+                   
+    print("Total distance was: ", total_distance)
+
+def calculate_distance(queue, g, current_vertex):
     shortest_distance = float('inf')
-    for loc in unvisited_queue:
-        print(loc.get_address())
-    print('----')
-    for i, delivery_loc in enumerate(unvisited_queue):
-        for k,v in g.edge_list.items():
-            if k[0].get_address() == start_vertex.get_address():
-                if k[1].get_address() == delivery_loc.get_address():
-                    print('From ',k[0].get_name(), ' to ',k[1].get_address(),' is ',g.edge_list[k], ' miles')
-                    if float(g.edge_list[k]) < float(shortest_distance):
-                        shortest_distance = g.edge_list[k]
-    print(shortest_distance)
-
-
-    # One vertex is removed with each iteration; repeat until the list is empty.
-    while len(unvisited_queue) > 100:
-
-        # Visit vertex with minimum distance from start_vertex
-        smallest_index = 0
-        for i in range(1, len(unvisited_queue)):
-            #Brady notes
-            # if unvisted_queue[1] distance is less than unvisited_queue[0] distance
-            # issue is that all distance values are infinity
-            if unvisited_queue[i].distance < unvisited_queue[smallest_index].distance:
-                smallest_index = i
-        current_vertex = unvisited_queue.pop(smallest_index)
-        print("From Start Vetex to current_vertex.label: " + current_vertex.label +" distance: " + str(current_vertex.distance))
-
-        #Check potential path lengths from the current vertex to all neighbors. values from  dictionary
-        for adj_vertex in g.adjacency_list[current_vertex]:
-            # if current_vertex = vertex_1 => adj_vertex in [vertex_2, vertex_3], if vertex_2 => adj_vertex in [vertex_6], ...
-            # values from dictionary
-            edge_weight = g.edge_list[(current_vertex, adj_vertex)]
-            # edge_weight = 484 then 626 then 1306, ...}
-            alternative_path_distance = current_vertex.distance + edge_weight
-
-            # If shorter path from start_vertex to adj_vertex is found, update adj_vertex's distance and predecessor
-            if alternative_path_distance < adj_vertex.distance:
-                adj_vertex.distance = alternative_path_distance
-                adj_vertex.pre_vertex = current_vertex
-
+    for i, delivery_loc in enumerate(queue):
+            #loop through each tuple pair in edge list
+            for k,v in g.edge_list.items():
+                #if from vertex in tuple matches current_vertex address
+                if k[0].get_address() == current_vertex.get_address():
+                    #if to vertex in tuple matches delivery location address
+                    if k[1].get_address() == delivery_loc.get_address():
+                        print('From ',k[0].get_name(), ' to ',k[1].get_name(),' is ',g.edge_list[k], ' miles')
+                        
+                        #if distance to new vertex is closest, update values
+                        if float(g.edge_list[k]) < float(shortest_distance):
+                            shortest_distance = g.edge_list[k] #miles
+                            new_vertex = k[1]
+                            idx = i
+    return new_vertex, idx, shortest_distance
 
 def get_shortest_path(start_vertex, end_vertex):
     # Start from end_vertex and build the path backwards.
@@ -73,10 +69,13 @@ def get_shortest_path(start_vertex, end_vertex):
     path = start_vertex.label + path
     return path
 
-t1 = [trucks[0]]
+# t1 = [trucks[0]]
 # Run Dijkstra algorithm for all trucks
-for truck in t1:
+num = 1
+for truck in trucks:
+    print("Path for truck: ", num)
     dijkstra_shortest_path(graph, vertices[0], truck.get_packages())
+    num+=1
 
 # print("\nDijkstra shortest path:")
 # for v in graph.adjacency_list:
