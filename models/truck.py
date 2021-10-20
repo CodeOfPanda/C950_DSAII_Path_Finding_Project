@@ -7,6 +7,7 @@ class Truck:
     def __init__(self, start_time='8:00'):
         self.time = start_time
         self.speed = 18
+        self.distance = 0.0
         self.packages = []
 
     # adds id's to package array.
@@ -16,6 +17,12 @@ class Truck:
     # returns package array   
     def get_packages(self):
         return self.packages
+    
+    def get_distance(self):
+        return self.distance
+    
+    def set_distance(self, new_distance):
+        self.distance = new_distance
 
     def print(self):
         for package in self.packages:

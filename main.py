@@ -23,7 +23,7 @@ def dijkstra_shortest_path(g, start_vertex, pkg_queue):
     start_vertex.set_distance(0.0)
     #setting current vertext to start vertex for the beginning of the algorithm. current_vertex gets updated throughout
     current_vertex = start_vertex
-    total_distance = float(0.0)
+    truck_distance = float(0.0)
     
     while len(unvisited_queue) >= 0:
         if len(unvisited_queue) == 0:
@@ -37,9 +37,10 @@ def dijkstra_shortest_path(g, start_vertex, pkg_queue):
         print("Current vertex is now: ", current_vertex.get_name())
         print("Removing ", unvisited_queue[idx].get_name(), "....")
         unvisited_queue.pop(idx)
-        total_distance = float(total_distance) + float(shortest_distance)
+        truck_distance = float(truck_distance) + float(shortest_distance)
                    
-    print("Total distance was: ", total_distance)
+    truck.set_distance(truck_distance)
+    print("Truck distance was: ", truck_distance)
 
 def calculate_distance(queue, g, current_vertex):
     shortest_distance = float('inf')
@@ -69,13 +70,16 @@ def get_shortest_path(start_vertex, end_vertex):
     path = start_vertex.label + path
     return path
 
-# t1 = [trucks[0]]
 # Run Dijkstra algorithm for all trucks
+total_distance = 0.0
 num = 1
 for truck in trucks:
     print("Path for truck: ", num)
     dijkstra_shortest_path(graph, vertices[0], truck.get_packages())
     num+=1
+    total_distance = total_distance + truck.get_distance()
+
+print("Total distance: ", total_distance)
 
 # print("\nDijkstra shortest path:")
 # for v in graph.adjacency_list:
