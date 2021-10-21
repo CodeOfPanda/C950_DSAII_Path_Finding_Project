@@ -6,11 +6,13 @@ class Truck:
     # T3 (leaves ~ 10:20am): packages will contain id's [5, 9, 2, 4, 7, 8, 10, 11]
 
     # constructor method
-    def __init__(self, hour, minute, second):
+    def __init__(self, hour, minute, second, name):
+        self.name = name
         self.speed = 18
         self.distance = 0.0
         self.leave_time = datetime.time(hour, minute, second, 0)
         self.packages = []
+
 
     # adds id's to package array.
     def load_packages(self, package):
@@ -25,10 +27,6 @@ class Truck:
     
     def set_distance(self, new_distance):
         self.distance = new_distance
-
-    def print(self):
-        for package in self.packages:
-            print(package.p_id)
             
     def get_leave_time(self):
         return self.leave_time

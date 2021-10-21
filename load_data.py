@@ -10,7 +10,7 @@ from models.truck import Truck
 # Big O(N)
 def load_package_data():
     # loading package data
-    with open('./data/Package_File.csv', 'r') as package_file:
+    with open('./data/WGUPS_Package_File.csv', 'r') as package_file:
         file = package_file.readlines()
         # spliting the data into individual array elements
         data_array = [row.split(',') for row in file]
@@ -25,7 +25,7 @@ def load_package_data():
             city = data[2]
             state = data[3]
             zip = int(data[4])
-            delivery_deadline = data[5]
+            delivery_deadline = data[5]            
             mass_kg = int(data[6])
             notes = data[7]
             status = 'AT_HUB'
@@ -90,9 +90,9 @@ def load_distance_data():
 # Big O(N) since it calls the function load_truck that has an O(N) runtime.
 def load_all_trucks(hashmap):
     # Create three truck objects
-    t1 = Truck(9,5,0)
-    t2 = Truck(8,0,0)
-    t3 = Truck(10,20,0)
+    t1 = Truck(9,5,0, 'Truck 1')
+    t2 = Truck(8,0,0, 'Truck 2')
+    t3 = Truck(10,27,0, 'Truck 3')
 
     # Package id's for each Truck
     t1_packages = [6, 25, 26, 31, 32, 28, 34, 39, 35, 33, 27, 24, 23, 22, 17, 12]

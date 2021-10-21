@@ -10,6 +10,7 @@ class Package:
         self.mass_kg = mass_kg
         self.notes = notes
         self.status = status
+        self.delivery_time = None
       
     # getters 
     def get_id(self):
@@ -39,6 +40,9 @@ class Package:
     def get_status(self):
         return self.status
     
+    def get_delivery_time(self):
+        return self.delivery_time
+    
     # setters 
     def set_id(self, p_id):
         self.p_id = p_id
@@ -66,3 +70,6 @@ class Package:
         
     def set_status(self, status):
         self.status = status
+        
+    def set_delivery_time(self, new_time):
+        self.delivery_time = new_time
