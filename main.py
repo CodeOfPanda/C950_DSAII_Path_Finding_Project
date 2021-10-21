@@ -101,6 +101,7 @@ def calculate_distance(queue, g, current_vertex, pkg_queue, time):
         if pkg.get_address() == new_vertex.get_address():
             pkg.set_status("DELIVERED") 
             pkg.set_delivery_time(time.get_time())
+            print("package id: ",pkg.get_id())
             print("Deadline: ",pkg.get_delivery_deadline())
             print("Delivered at: ",pkg.get_delivery_time())
 
@@ -114,6 +115,10 @@ for truck in trucks:
 
     # sets the delivery status to en route once truck leaves
     for pkg in truck.get_packages():
+        if pkg.get_id() == 9:
+            pkg.set_address("410 S State St")
+            pkg.set_city("Salt Lake City")
+            pkg.set_zip(84111)
         pkg.set_status("EN ROUTE")
     
     # calls greedy algorithm
