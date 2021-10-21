@@ -1,7 +1,7 @@
 # Maggie Leigland Student ID: #001058808
 
-from load_data import load_package_data, load_distance_data, load_all_trucks
 import datetime
+from load_data import load_package_data, load_distance_data, load_all_trucks
 
 pkg_hashmap = load_package_data()
 graph, vertices = load_distance_data()
@@ -31,21 +31,21 @@ def greedy_shortest_path(g, start_vertex, truck, time):
     
     while len(unvisited_queue) >= 0:
         if len(unvisited_queue) == 0:
-            new_vertex, idx, shortest_distance = calculate_distance([start_vertex], g, current_vertex, pkg_queue)
+            new_vertex, idx, distance_traveled = calculate_distance([start_vertex], g, current_vertex, pkg_queue)
             break
         else:
-            new_vertex, idx, shortest_distance = calculate_distance(unvisited_queue, g, current_vertex, pkg_queue)
+            new_vertex, idx, distance_traveled = calculate_distance(unvisited_queue, g, current_vertex, pkg_queue)
             
         #after loop has ran, update current_vertex
         current_vertex = new_vertex
         unvisited_queue.pop(idx)
         #pass in the next distance to be travelled and get seconds passed returned
-        time = time + datetime.timedelta(seconds=truck.calculate_time(shortest_distance))
+        time = time + datetime.timedelta(seconds=truck.calculate_time(distance_traveled))
         print("Time: ", time.time())
-        truck_distance = float(truck_distance) + float(shortest_distance)
-                   
-    truck.set_distance(truck_distance)
-    print("Truck distance was: ", truck_distance)
+        truck_distance = float(truck_distance) + float(distance_traveled)   
+        truck.set_distance(truck_distance)
+        
+    print("Truck distance was: ", truck.get_distance())
 
 def calculate_distance(queue, g, current_vertex, pkg_queue):
     shortest_distance = float('inf')
