@@ -8,8 +8,8 @@ pkg_hashmap = load_package_data()  # hash table for package data
 graph, vertices = load_distance_data()  # graph data and vertices array
 trucks = load_all_trucks(pkg_hashmap)  # trucks 1 - 3 loaded with packages
 
-# greedy algorithm for delivering packages off of each truck.
-def greedy_shortest_path(g, start_vertex, truck):
+# dijkstra algorithm for delivering packages off of each truck.
+def dijkstra_shortest_path(g, start_vertex, truck):
     # Time object that replaces the time based off truck leave time
     time = Time(hour=truck.get_leave_time().hour, minute=truck.get_leave_time().minute, second=truck.get_leave_time().second) 
     print("In algorithm time: ", time.get_time())
@@ -121,8 +121,8 @@ for truck in trucks:
             pkg.set_zip(84111)
         pkg.set_status("EN ROUTE")
     
-    # calls greedy algorithm
-    greedy_shortest_path(graph, vertices[0], truck)
+    # calls dijkstra algorithm
+    dijkstra_shortest_path(graph, vertices[0], truck)
     total_distance = total_distance + truck.get_distance()
 
 print("Total distance: ", total_distance)  # total distance traveled by all trucks.
