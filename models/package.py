@@ -11,6 +11,7 @@ class Package:
         self.notes = notes
         self.status = status
         self.delivery_time = None
+        self.start_time = None
       
     # getters 
     def get_id(self):
@@ -43,6 +44,9 @@ class Package:
     def get_delivery_time(self):
         return self.delivery_time
     
+    def get_start_time(self):
+        return self.start_time
+    
     # setters 
     def set_id(self, p_id):
         self.p_id = p_id
@@ -73,3 +77,9 @@ class Package:
         
     def set_delivery_time(self, new_time):
         self.delivery_time = new_time
+        
+    def set_start_time(self, new_time):
+        self.start_time = new_time
+        
+    def print_pkg(self, ID):
+        print(self.get_ID(ID), "\t", self.get_address(), "\t", )

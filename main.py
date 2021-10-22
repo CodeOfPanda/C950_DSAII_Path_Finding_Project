@@ -3,8 +3,10 @@
 # importing classes
 from load_data import load_package_data, load_distance_data, load_all_trucks
 from algorithm import NN_shortest_path
+from helpers.print_UI import print_all_pkgs, print_one_pkg
 
-pkg_hashmap = load_package_data()  # hash table for package data
+
+pkg_hashmap, all_pkgs = load_package_data()  # hash table for package data
 graph, vertices = load_distance_data()  # graph data and vertices array
 trucks = load_all_trucks(pkg_hashmap)  # trucks 1 - 3 loaded with packages
 
@@ -12,8 +14,7 @@ trucks = load_all_trucks(pkg_hashmap)  # trucks 1 - 3 loaded with packages
 total_distance = 0.0
 
 for truck in trucks:
-    print(truck.name, " starting route at ", truck.get_leave_time())
-
+    # print(truck.name, " starting route at ", truck.get_leave_time())
     # sets the delivery status to en route once truck leaves
     for pkg in truck.get_packages():
         if pkg.get_id() == 9:
@@ -21,9 +22,41 @@ for truck in trucks:
             pkg.set_city("Salt Lake City")
             pkg.set_zip(84111)
         pkg.set_status("EN ROUTE")
+        pkg.set_start_time(truck.get_leave_time())
+        # print("Package start time is: ", pkg.get_start_time())
     
     # calls Nearest Neighbor algorithm
     NN_shortest_path(graph, vertices[0], truck, vertices)
     total_distance = total_distance + truck.get_distance()
 
-print("Total distance: ", total_distance)  # total distance traveled by all trucks.
+user_input = 0
+while(user_input != 4):
+    
+    print("Select from the following:")
+    print("1 = Print ALL packages and corresponding information.")
+    print("2 = Enter package ID and a time to view package information.")
+    print("3 = Print truck start/finish time and total mileage.")
+    print("4 = Exit program.")
+
+    user_input = int(input())
+    print('----------------------------------------------------------------')
+
+    if user_input == 1:
+        user_time = input("Enter a time (hour:minute): ")        
+        print_all_pkgs(all_pkgs, user_time)
+
+    elif user_input == 2:
+        user_id = int(input("Enter Package ID: "))
+        user_time = input("Enter a time (hour:minute): ")
+        print_one_pkg(all_pkgs, user_time, user_id)
+                    
+    elif user_input == 3:
+        for truck in trucks: 
+            print(truck.name, " starting route at ", truck.get_leave_time(), " finished route at ", truck.get_end_time(), " total miles driven: ", truck.get_distance())
+        
+        print("\nTotal distance: ", total_distance, "\n")  # total distance traveled by all trucks.
+    elif user_input == 4:
+        break;
+    else:
+        print("Sorry, not a valid input. Try again\n")
+        

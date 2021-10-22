@@ -5,7 +5,7 @@ from models.time import Time
 def NN_shortest_path(g, start_vertex, truck, vertices):
     # Time object that replaces the time based off truck leave time
     time = Time(hour=truck.get_leave_time().hour, minute=truck.get_leave_time().minute, second=truck.get_leave_time().second) 
-    print("In algorithm time: ", time.get_time())
+    # print("In algorithm time: ", time.get_time())
     # Put all vertices in an unvisited queue.
     unvisited_queue = []  # empty array for vertex addresses of delivery locations
     pkg_queue = truck.get_packages()  # array of packages
@@ -40,7 +40,7 @@ def NN_shortest_path(g, start_vertex, truck, vertices):
             new_vertex, idx, distance_traveled = calculate_distance([start_vertex], g, current_vertex, pkg_queue, time)
             current_vertex = new_vertex
             time.set_time(truck.calculate_time(distance_traveled))
-            print(time.get_time())
+            # print(time.get_time())
             truck_distance = float(truck_distance) + float(distance_traveled)   
             truck.set_distance(truck_distance)
             break
@@ -64,11 +64,13 @@ def NN_shortest_path(g, start_vertex, truck, vertices):
         current_vertex = new_vertex
         #pass in the next distance to be travelled and get seconds passed returned
         time.set_time(truck.calculate_time(distance_traveled))
-        print(time.get_time())
+        # print(time.get_time())
         truck_distance = float(truck_distance) + float(distance_traveled) # updates truck distance  
         truck.set_distance(truck_distance)
         
-    print("Truck distance was: ", truck.get_distance())
+    # print("Truck distance was: ", truck.get_distance())
+    truck.set_end_time(time.get_time())
+    # print("Truck finished at: ", truck.get_end_time())
 
 # called within the Nearest Neighbor algorithm function
 # calculates the distances between delivery locations and chooses the closer location.
@@ -88,14 +90,14 @@ def calculate_distance(queue, g, current_vertex, pkg_queue, time):
                             new_vertex = k[1]
                             idx = i
     
-    print('From ',current_vertex.get_name(), ' to ',new_vertex.get_name(),' is ',shortest_distance, ' miles')
+    # print('From ',current_vertex.get_name(), ' to ',new_vertex.get_name(),' is ',shortest_distance, ' miles')
     # loop through the packages on the truck and set their status as delivered and sets their time of delivery once at location
     for pkg in pkg_queue:
         if pkg.get_address() == new_vertex.get_address():
             pkg.set_status("DELIVERED") 
             pkg.set_delivery_time(time.get_time())
-            print("package id: ",pkg.get_id())
-            print("Deadline: ",pkg.get_delivery_deadline())
-            print("Delivered at: ",pkg.get_delivery_time())
+            # print("package id: ",pkg.get_id())
+            # print("Deadline: ",pkg.get_delivery_deadline())
+            # print("Delivered at: ",pkg.get_delivery_time())
 
     return new_vertex, idx, shortest_distance

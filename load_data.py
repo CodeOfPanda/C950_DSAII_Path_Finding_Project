@@ -17,6 +17,7 @@ def load_package_data():
         # removing the first element from the array (column headers)
         data_array.pop(0)
         h = HashTable()
+        all_pkgs = []
 
         # assigning data to the corect variable to be passed into the Package constructor 
         for data in data_array:
@@ -35,7 +36,8 @@ def load_package_data():
                           delivery_deadline, mass_kg, notes, status)
             # inserting the key/value pair into the hash_table
             h.insert(p_id, pkg)
-    return h
+            all_pkgs.append(pkg)
+    return h, all_pkgs
 
 # function responsible for loading the distance data and delivery location data in from their csv files.
 # creates a graph based off vertex names and locations

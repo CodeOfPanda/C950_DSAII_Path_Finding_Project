@@ -11,6 +11,7 @@ class Truck:
         self.speed = 18
         self.distance = 0.0
         self.leave_time = datetime.time(hour, minute, second, 0)
+        self.end_time = datetime.time(hour, minute, second, 0)
         self.packages = []
 
 
@@ -30,6 +31,12 @@ class Truck:
             
     def get_leave_time(self):
         return self.leave_time
+    
+    def set_end_time(self, end_time):
+        self.end_time = end_time
+        
+    def get_end_time(self):
+        return self.end_time
 
     def calculate_time(self, distance):
         seconds = float(distance) / 0.005 #0.005 is miles per second at 18mph
