@@ -5,7 +5,6 @@ class Truck:
     # T1 (leaves at 9:05am): packages will contain id's: [6, 25, 26, 31, 32, 28, 34, 39, 35, 33, 27, 24, 23, 22, 17, 12]
     # T3 (leaves ~ 10:20am): packages will contain id's [5, 9, 2, 4, 7, 8, 10, 11]
 
-    # constructor method
     def __init__(self, hour, minute, second, name):
         self.name = name
         self.speed = 18
@@ -15,11 +14,9 @@ class Truck:
         self.packages = []
 
 
-    # adds id's to package array.
     def load_packages(self, package):
         self.packages.append(package)
-     
-    # returns package array   
+      
     def get_packages(self):
         return self.packages
     

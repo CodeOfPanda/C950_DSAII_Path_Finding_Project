@@ -23,8 +23,5 @@ class Graph:
     def add_undirected_edge(self, vertex_1, vertex_2, distance=0.0):
         self.add_edge(vertex_1, vertex_2, distance)
         self.add_edge(vertex_2, vertex_1, distance)
-        
-    # print method
-    def print(self):
-        print(self.adjacency_list)
+
         

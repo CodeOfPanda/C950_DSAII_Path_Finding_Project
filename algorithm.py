@@ -2,10 +2,11 @@ from models.time import Time
 
 
 # Nearest Neighbor algorithm for delivering packages off of each truck.
+# Big O(N^2)
 def NN_shortest_path(g, start_vertex, truck, vertices):
     # Time object that replaces the time based off truck leave time
     time = Time(hour=truck.get_leave_time().hour, minute=truck.get_leave_time().minute, second=truck.get_leave_time().second) 
-    # print("In algorithm time: ", time.get_time())
+
     # Put all vertices in an unvisited queue.
     unvisited_queue = []  # empty array for vertex addresses of delivery locations
     pkg_queue = truck.get_packages()  # array of packages
@@ -15,8 +16,9 @@ def NN_shortest_path(g, start_vertex, truck, vertices):
     # looping through the package queue and adding delivery addresses to 
     # the unvisited_queue OR the priority queue ONLY IF the packages are
     # on truck 1.
-    for package in pkg_queue:
-        for vertex in vertices:
+    # Big O(N^2) since we are working fixed size arrays
+    for package in pkg_queue:  # O(N) because pkg_queue is always going to be and array of 16 elements
+        for vertex in vertices:  # O(N), if I had to add vertices dynamically it would be O(N)
             if package.get_address() == vertex.get_address():
                 if truck.name == "Truck 1":
                     if package.get_delivery_deadline() == '10:30 AM':
@@ -34,13 +36,13 @@ def NN_shortest_path(g, start_vertex, truck, vertices):
     
     # looping through the unvisited queue and poping (deleting) delivery locations at each stop.
     # Also tracking the distances of each truck as well as the time each package was delivered.
+    # Big O(N^2)
     while len(unvisited_queue) >= 0:
         # this is our base statement that breaks us from the loop. aslo takes the trucks back to the hub.
         if len(unvisited_queue) == 0:
-            new_vertex, idx, distance_traveled = calculate_distance([start_vertex], g, current_vertex, pkg_queue, time)
+            new_vertex, idx, distance_traveled = calculate_distance([start_vertex], g, current_vertex, pkg_queue, time)  # this function has O(N^2)
             current_vertex = new_vertex
             time.set_time(truck.calculate_time(distance_traveled))
-            # print(time.get_time())
             truck_distance = float(truck_distance) + float(distance_traveled)   
             truck.set_distance(truck_distance)
             break
@@ -52,7 +54,7 @@ def NN_shortest_path(g, start_vertex, truck, vertices):
                 priority_queue.pop(idx)
                 
                 # pops off the duplicate package from the unvisited queue.
-                for i, p in enumerate(unvisited_queue):
+                for i, p in enumerate(unvisited_queue):  # O(N)
                     if p.get_address() == new_vertex.get_address():
                         unvisited_queue.pop(i)
             # if not truck 1, handles unvisited queue           
@@ -64,22 +66,20 @@ def NN_shortest_path(g, start_vertex, truck, vertices):
         current_vertex = new_vertex
         #pass in the next distance to be travelled and get seconds passed returned
         time.set_time(truck.calculate_time(distance_traveled))
-        # print(time.get_time())
         truck_distance = float(truck_distance) + float(distance_traveled) # updates truck distance  
         truck.set_distance(truck_distance)
         
-    # print("Truck distance was: ", truck.get_distance())
     truck.set_end_time(time.get_time())
-    # print("Truck finished at: ", truck.get_end_time())
 
 # called within the Nearest Neighbor algorithm function
 # calculates the distances between delivery locations and chooses the closer location.
 # returns new vertex, the index for the unvisited/priority queue to pop vertex.
+# Big O(N^2)
 def calculate_distance(queue, g, current_vertex, pkg_queue, time):
     shortest_distance = float('inf')
-    for i, delivery_loc in enumerate(queue):
+    for i, delivery_loc in enumerate(queue):  # O(N)
             # loop through each tuple pair in edge list { (from_vertex, to_vertex) : miles }
-            for k,v in g.edge_list.items():
+            for k,v in g.edge_list.items():  # O(N)
                 # if from vertex in tuple matches current_vertex address
                 if k[0].get_address() == current_vertex.get_address():
                     # if to vertex in tuple matches delivery location address
@@ -90,14 +90,10 @@ def calculate_distance(queue, g, current_vertex, pkg_queue, time):
                             new_vertex = k[1]
                             idx = i
     
-    # print('From ',current_vertex.get_name(), ' to ',new_vertex.get_name(),' is ',shortest_distance, ' miles')
     # loop through the packages on the truck and set their status as delivered and sets their time of delivery once at location
     for pkg in pkg_queue:
         if pkg.get_address() == new_vertex.get_address():
             pkg.set_status("DELIVERED") 
             pkg.set_delivery_time(time.get_time())
-            # print("package id: ",pkg.get_id())
-            # print("Deadline: ",pkg.get_delivery_deadline())
-            # print("Delivered at: ",pkg.get_delivery_time())
 
     return new_vertex, idx, shortest_distance

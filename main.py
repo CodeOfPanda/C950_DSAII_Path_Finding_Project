@@ -1,9 +1,9 @@
 # Maggie Leigland Student ID: #001058808
 
 # importing classes
-from load_data import load_package_data, load_distance_data, load_all_trucks
-from algorithm import NN_shortest_path
-from helpers.print_UI import print_all_pkgs, print_one_pkg, print_truck_data
+from load_data import load_package_data, load_distance_data, load_all_trucks  # functions for loading data
+from algorithm import NN_shortest_path 
+from helpers.print_UI import print_all_pkgs, print_one_pkg, print_truck_data  # functions for user interface
 
 
 pkg_hashmap, all_pkgs = load_package_data()  # hash table for package data and array of all packages
@@ -17,20 +17,22 @@ for truck in trucks:
     # print(truck.name, " starting route at ", truck.get_leave_time())
     # sets the delivery status to en route once truck leaves
     for pkg in truck.get_packages():
+        # updating package 9's address
         if pkg.get_id() == 9:
             pkg.set_address("410 S State St")
             pkg.set_city("Salt Lake City")
             pkg.set_zip(84111)
-        pkg.set_status("EN ROUTE")
-        pkg.set_start_time(truck.get_leave_time())
-        # print("Package start time is: ", pkg.get_start_time())
+        pkg.set_status("EN ROUTE")  # updating package status after leaving hub
+        pkg.set_start_time(truck.get_leave_time())  # capturing trucks start time 
     
     # calls Nearest Neighbor algorithm
     NN_shortest_path(graph, vertices[0], truck, vertices)
-    total_distance = total_distance + truck.get_distance()
+    total_distance = total_distance + truck.get_distance()  # updates total mileage
 
-print_truck_data(trucks, total_distance)
+# prints trucks start/finish time & total mileage for all trucks
+print_truck_data(trucks, total_distance)  
 
+# loop for user interface
 user_input = 0
 while(user_input != 4):
     
@@ -43,11 +45,12 @@ while(user_input != 4):
     user_input = int(input())
     print('----------------------------------------------------------------')
 
+    # calls functions to print All pkg data and truck data
     if user_input == 1:
         user_time = input("Enter a time (hour:minute): ")        
         print_all_pkgs(all_pkgs, user_time)
         print_truck_data(trucks, total_distance)
-
+    # calls functions to print single pkg data and truck data
     elif user_input == 2:
         user_id = int(input("Enter Package ID: "))
         user_time = input("Enter a time (hour:minute): ")
@@ -60,12 +63,13 @@ while(user_input != 4):
             user_id = int(input("Enter Package ID: "))
         
         print_truck_data(trucks, total_distance)
-                    
+    # calls function to print truck data                    
     elif user_input == 3:
         print_truck_data(trucks, total_distance)        
-        
+    # break statement   
     elif user_input == 4:
         break;
+    # invalid entry
     else:
         print("Sorry, not a valid input. Try again\n")
         

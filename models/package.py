@@ -80,6 +80,4 @@ class Package:
         
     def set_start_time(self, new_time):
         self.start_time = new_time
-        
-    def print_pkg(self, ID):
-        print(self.get_ID(ID), "\t", self.get_address(), "\t", )
+    

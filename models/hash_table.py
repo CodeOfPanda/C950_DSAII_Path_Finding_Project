@@ -9,11 +9,13 @@ class HashTable:
     # the hash function
     # takes the key modulo (tablesize) 
     # gives you the index within the hash table
+    # O(N)
     def get_hash_index(self, key):
         return hash(key) % self.init_size
     
     # insert function
     # adds new key/value pair into the table.
+    # Big O(N)
     def insert(self, key, value):
         key_hash_index = self.get_hash_index(key)  # gets index from hash table
         key_value = [key, value]  # creates array of key/value pair
@@ -34,7 +36,8 @@ class HashTable:
             return True  # breaks
     
     # look_up function
-    # takes the key and returns the value if found    
+    # takes the key and returns the value if found  
+    # Big O(N)  
     def look_up(self, key):
         key_hash_index = self.get_hash_index(key)  # get index from hash talbe
         
@@ -49,6 +52,7 @@ class HashTable:
     
     # remove function
     # deletes a key/value pair from the hash table
+    # Big O(N)
     def remove(self, key):
         key_hash_index = self.get_hash_index(key)  # gets index from hash table
         
