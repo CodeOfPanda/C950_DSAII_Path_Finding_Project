@@ -3,10 +3,10 @@
 # importing classes
 from load_data import load_package_data, load_distance_data, load_all_trucks
 from algorithm import NN_shortest_path
-from helpers.print_UI import print_all_pkgs, print_one_pkg
+from helpers.print_UI import print_all_pkgs, print_one_pkg, print_truck_data
 
 
-pkg_hashmap, all_pkgs = load_package_data()  # hash table for package data
+pkg_hashmap, all_pkgs = load_package_data()  # hash table for package data and array of all packages
 graph, vertices = load_distance_data()  # graph data and vertices array
 trucks = load_all_trucks(pkg_hashmap)  # trucks 1 - 3 loaded with packages
 
@@ -29,6 +29,8 @@ for truck in trucks:
     NN_shortest_path(graph, vertices[0], truck, vertices)
     total_distance = total_distance + truck.get_distance()
 
+print_truck_data(trucks, total_distance)
+
 user_input = 0
 while(user_input != 4):
     
@@ -44,17 +46,24 @@ while(user_input != 4):
     if user_input == 1:
         user_time = input("Enter a time (hour:minute): ")        
         print_all_pkgs(all_pkgs, user_time)
+        print_truck_data(trucks, total_distance)
 
     elif user_input == 2:
         user_id = int(input("Enter Package ID: "))
         user_time = input("Enter a time (hour:minute): ")
-        print_one_pkg(all_pkgs, user_time, user_id)
+        
+        # boundry test for user id
+        if user_id > -1 and user_id < 41:
+            print_one_pkg(all_pkgs, user_time, user_id)
+        else: 
+            print("Sorry, invalid ID")
+            user_id = int(input("Enter Package ID: "))
+        
+        print_truck_data(trucks, total_distance)
                     
     elif user_input == 3:
-        for truck in trucks: 
-            print(truck.name, " starting route at ", truck.get_leave_time(), " finished route at ", truck.get_end_time(), " total miles driven: ", truck.get_distance())
+        print_truck_data(trucks, total_distance)        
         
-        print("\nTotal distance: ", total_distance, "\n")  # total distance traveled by all trucks.
     elif user_input == 4:
         break;
     else:

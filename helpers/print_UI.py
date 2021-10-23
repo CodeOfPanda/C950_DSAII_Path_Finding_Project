@@ -34,3 +34,9 @@ def print_one_pkg(all_pkgs, user_time, user_id):
                     print("Package ID: ", pkg.get_id(), "\tAddress: ", pkg.get_address(), "\tDelivery Deadline: ", pkg.get_delivery_deadline(), "\t City: ", pkg.get_city(), "\t zip code:", pkg.get_zip(),
                     "\t Weight: ", pkg.get_mass_kg(), "kg", "\tDelivery Status: Delivered", "\tDelivered at ", pkg.get_delivery_time())
     print()
+    
+
+def print_truck_data(trucks, total_distance):
+    for truck in trucks:
+            print(truck.name, " starting route at ", truck.get_leave_time(), " finished route at ", truck.get_end_time(), " total miles driven: ", truck.get_distance())
+    print("\nTotal distance: ", total_distance, "\n")  # total distance traveled by all trucks.
