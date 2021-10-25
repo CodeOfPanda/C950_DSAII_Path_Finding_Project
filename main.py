@@ -24,6 +24,7 @@ for truck in trucks:
             pkg.set_zip(84111)
         pkg.set_status("EN ROUTE")  # updating package status after leaving hub
         pkg.set_start_time(truck.get_leave_time())  # capturing trucks start time 
+        pkg.set_truck(truck.name)
     
     # calls Nearest Neighbor algorithm
     NN_shortest_path(graph, vertices[0], truck, vertices)
@@ -34,13 +35,14 @@ print_truck_data(trucks, total_distance)
 
 # loop for user interface
 user_input = 0
-while(user_input != 4):
+while(user_input != 5):
     
     print("Select from the following:")
     print("1 = Print ALL packages and corresponding information.")
     print("2 = Enter package ID and a time to view package information.")
     print("3 = Print truck start/finish time and total mileage.")
-    print("4 = Exit program.")
+    print("4 = Print screen shots.")
+    print("5 = Exit program.")
 
     user_input = int(input())
     print('----------------------------------------------------------------')
@@ -65,9 +67,22 @@ while(user_input != 4):
         print_truck_data(trucks, total_distance)
     # calls function to print truck data                    
     elif user_input == 3:
-        print_truck_data(trucks, total_distance)        
-    # break statement   
+        print_truck_data(trucks, total_distance)
     elif user_input == 4:
+        user_time = "8:35"
+        print(user_time, "a.m.")
+        print_all_pkgs(all_pkgs, user_time)
+        print_truck_data(trucks, total_distance)
+        user_time = "9:40"
+        print(user_time, "a.m.")
+        print_all_pkgs(all_pkgs, user_time)
+        print_truck_data(trucks, total_distance)
+        user_time = "1:00"
+        print(user_time, "p.m.")
+        print_all_pkgs(all_pkgs, user_time)
+        print_truck_data(trucks, total_distance)
+    # break statement   
+    elif user_input == 5:
         break;
     # invalid entry
     else:

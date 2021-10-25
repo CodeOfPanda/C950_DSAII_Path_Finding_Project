@@ -12,6 +12,7 @@ class Package:
         self.status = status
         self.delivery_time = None
         self.start_time = None
+        self.truck = None
       
     # getters 
     def get_id(self):
@@ -47,6 +48,9 @@ class Package:
     def get_start_time(self):
         return self.start_time
     
+    def get_truck(self):
+        return self.truck
+    
     # setters 
     def set_id(self, p_id):
         self.p_id = p_id
@@ -81,3 +85,5 @@ class Package:
     def set_start_time(self, new_time):
         self.start_time = new_time
     
+    def set_truck(self, truck):
+        self.truck = truck
