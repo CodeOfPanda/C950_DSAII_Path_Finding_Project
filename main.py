@@ -4,7 +4,8 @@
 from load_data import load_package_data, load_distance_data, load_all_trucks  # functions for loading data
 from algorithm import NN_shortest_path 
 from helpers.print_UI import print_all_pkgs, print_one_pkg, print_truck_data  # functions for user interface
-
+from helpers.calculate_PM_time import get_PM_time
+import datetime
 
 pkg_hashmap, all_pkgs = load_package_data()  # hash table for package data and array of all packages
 graph, vertices = load_distance_data()  # graph data and vertices array
@@ -31,7 +32,9 @@ for truck in trucks:
     total_distance = total_distance + truck.get_distance()  # updates total mileage
 
 # prints trucks start/finish time & total mileage for all trucks
-print_truck_data(trucks, total_distance)  
+print_truck_data(trucks, total_distance)
+
+
 
 # loop for user interface
 user_input = 0
@@ -41,7 +44,7 @@ while(user_input != 5):
     print("1 = Print ALL packages and corresponding information.")
     print("2 = Enter package ID and a time to view package information.")
     print("3 = Print truck start/finish time and total mileage.")
-    print("4 = Print screen shots.")
+    print("4 = Print screenshots.")
     print("5 = Exit program.")
 
     user_input = int(input())
@@ -49,37 +52,63 @@ while(user_input != 5):
 
     # calls functions to print All pkg data and truck data
     if user_input == 1:
-        user_time = input("Enter a time (hour:minute): ")        
-        print_all_pkgs(all_pkgs, user_time)
-        print_truck_data(trucks, total_distance)
+        user_time = input("Enter a time (hour:minute): ")
+        time_of_day = input("AM or PM? ")   
+        while True:
+            if time_of_day in ['PM', 'pm']:
+                input_time = get_PM_time(user_time)
+                print_all_pkgs(all_pkgs, input_time)
+                print_truck_data(trucks, total_distance)
+                break
+            elif time_of_day in ['AM', 'am']:
+                input_time = datetime.datetime.strptime(user_time, '%H:%M').time()
+                print_all_pkgs(all_pkgs, input_time)
+                print_truck_data(trucks, total_distance)
+                break    
+            else: 
+                print("Sorry, invalid Entry")
+                user_time = int(input("Enter AM or PM: "))   
+        
     # calls functions to print single pkg data and truck data
     elif user_input == 2:
         user_id = int(input("Enter Package ID: "))
-        user_time = input("Enter a time (hour:minute): ")
+        while True:     
+            # boundry test for user id
+            if user_id > 0 and user_id < 41:
+                user_time = input("Enter a time (hour:minute): ")
+                time_of_day = input("AM or PM? ")
+                if time_of_day in ['PM', 'pm']:
+                    input_time = get_PM_time(user_time)
+                    print_one_pkg(all_pkgs, input_time, user_id)
+                    print_truck_data(trucks, total_distance)
+                    break
+                elif time_of_day in ['AM', 'am']:
+                    input_time = datetime.datetime.strptime(user_time, '%H:%M').time()
+                    print_one_pkg(all_pkgs, input_time, user_id)
+                    print_truck_data(trucks, total_distance)
+                    break       
+                else: 
+                    print("Sorry, invalid Entry")
+                    user_time = int(input("Enter AM or PM: "))    
+            else: 
+                print("Sorry, invalid ID")
+                user_id = int(input("Enter Package ID: "))
         
-        # boundry test for user id
-        if user_id > -1 and user_id < 41:
-            print_one_pkg(all_pkgs, user_time, user_id)
-        else: 
-            print("Sorry, invalid ID")
-            user_id = int(input("Enter Package ID: "))
-        
-        print_truck_data(trucks, total_distance)
     # calls function to print truck data                    
     elif user_input == 3:
         print_truck_data(trucks, total_distance)
     elif user_input == 4:
-        user_time = "8:35"
-        print(user_time, "a.m.")
-        print_all_pkgs(all_pkgs, user_time)
+        print("8:35 a.m.")
+        input_time = datetime.datetime.strptime("8:35", '%H:%M').time()
+        print_all_pkgs(all_pkgs, input_time)
         print_truck_data(trucks, total_distance)
-        user_time = "9:40"
-        print(user_time, "a.m.")
-        print_all_pkgs(all_pkgs, user_time)
+        print("9:40 a.m.")
+        input_time = datetime.datetime.strptime("9:40", '%H:%M').time()
+        print_all_pkgs(all_pkgs, input_time)
         print_truck_data(trucks, total_distance)
-        user_time = "1:00"
-        print(user_time, "p.m.")
-        print_all_pkgs(all_pkgs, user_time)
+        print("1:00 p.m.")
+        input_time = get_PM_time("1:00")
+        print_all_pkgs(all_pkgs, input_time)
         print_truck_data(trucks, total_distance)
     # break statement   
     elif user_input == 5:

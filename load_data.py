@@ -97,9 +97,9 @@ def load_all_trucks(hashmap):
     t3 = Truck(10,27,0, 'Truck 3')
 
     # Package id's for each Truck
-    t1_packages = [6, 25, 26, 31, 32, 28, 34, 37, 40]
+    t1_packages = [6, 25, 26, 31, 32, 28, 34, 40]
     t2_packages = [3, 18, 36, 38, 37, 5, 1, 13, 14, 15, 16, 19, 20, 21, 29, 30]
-    t3_packages = [9, 2, 4, 7, 8, 10, 11, 35, 33, 27, 24, 23, 22, 17, 12]
+    t3_packages = [9, 2, 4, 7, 8, 10, 11, 35, 33, 27, 24, 23, 22, 17, 12, 39]
     # array for truck data that is returned from the function load_truck.
     trucks = []
     truck1 = load_truck(t1, t1_packages, hashmap)
