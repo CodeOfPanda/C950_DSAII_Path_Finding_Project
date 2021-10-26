@@ -47,7 +47,13 @@ while(user_input != 5):
     print("4 = Print screenshots.")
     print("5 = Exit program.")
 
-    user_input = int(input())
+    _input = input()
+    
+    while (_input not in ['1','2','3','4','5']):
+        print("Sorry, invalid Entry")
+        _input = input("Please enter a valid number 1-5: ")
+        
+    user_input = int(_input)    
     print('----------------------------------------------------------------')
 
     # calls functions to print All pkg data and truck data
