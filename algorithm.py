@@ -1,6 +1,5 @@
 from models.time import Time
 
-
 # Nearest Neighbor algorithm for delivering packages off of each truck.
 # Big O(N^2)
 def NN_shortest_path(g, start_vertex, truck, vertices):
@@ -28,8 +27,6 @@ def NN_shortest_path(g, start_vertex, truck, vertices):
     queue = set(unvisited_queue)
     unvisited_queue = list(queue)
     
-    # Start_vertex has a distance of 0 from itself
-    start_vertex.set_distance(0.0)
     #setting current vertext to start vertex for the beginning of the algorithm. current_vertex gets updated throughout
     current_vertex = start_vertex
     truck_distance = float(0.0)
